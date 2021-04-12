@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-Environment* Environment::readFromFile(std::string filename)
+Environment* Environment::readFromFile(const std::string& filename)
 {
     std::ifstream outputFile(filename);
 
@@ -70,12 +70,22 @@ bool Environment::canVisit(int x, int y, int z) const
     return false;
 }
 
+bool Environment::canVisit(Position position) const
+{
+    return this->canVisit(position.x, position.y, position.z);
+}
+
 void Environment::setCanVisit(int x, int y, int z, bool canVisit)
 {
     if (x >= 0 && x < this->xSize && y >= 0 && y < this->ySize && z >= 0 && z < this->zSize)
     {
         this->nodes[this->xSize * (this->ySize * z + y) + x] = canVisit;
     }
+}
+
+void Environment::setCanVisit(Position position, bool canVisit)
+{
+    return this->setCanVisit(position.x, position.y, position.z, canVisit);
 }
 
 float Environment::getAmountVisitable() const
@@ -109,7 +119,7 @@ int Environment::getSizeZ() const
     return this->zSize;
 }
 
-void Environment::saveToFile(std::string filename) const
+void Environment::saveToFile(const std::string& filename) const
 {
     std::ofstream outputFile(filename);
 

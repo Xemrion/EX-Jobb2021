@@ -11,8 +11,7 @@ Environment* Generator::generateEnvironment(int xSize, int ySize, int zSize, uns
 	int lastPercentage = 0;
 	int percentage = 0;
 	int tries = 0;
-
-	srand(seed);
+	std::mt19937 rng(seed);
 
 	std::cout << "-=@ Generating Environment @=-\n";
 	std::cout << "-- Seed: " << seed << "\n";
@@ -27,10 +26,10 @@ Environment* Generator::generateEnvironment(int xSize, int ySize, int zSize, uns
 		{
 			if (tries >= 1000)
 				break;
-
-			x = rand() % xSize;
-			y = rand() % ySize;
-			z = rand() % zSize;
+			
+			x = rng() % xSize;
+			y = rng() % ySize;
+			z = rng() % zSize;
 
 			tries++;
 		}

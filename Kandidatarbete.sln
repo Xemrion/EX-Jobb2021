@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnvironmentGenerator", "EnvironmentGenerator\EnvironmentGenerator.vcxproj", "{2E09DAF2-0AA7-4620-BFBB-C5230E83712C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pathfinding", "Pathfinding\Pathfinding.vcxproj", "{D195822B-17A4-44C8-B7F5-02E1C4CD4536}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E09DAF2-0AA7-4620-BFBB-C5230E83712C} = {2E09DAF2-0AA7-4620-BFBB-C5230E83712C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +26,14 @@ Global
 		{2E09DAF2-0AA7-4620-BFBB-C5230E83712C}.Release|x64.Build.0 = Release|x64
 		{2E09DAF2-0AA7-4620-BFBB-C5230E83712C}.Release|x86.ActiveCfg = Release|Win32
 		{2E09DAF2-0AA7-4620-BFBB-C5230E83712C}.Release|x86.Build.0 = Release|Win32
+		{D195822B-17A4-44C8-B7F5-02E1C4CD4536}.Debug|x64.ActiveCfg = Debug|x64
+		{D195822B-17A4-44C8-B7F5-02E1C4CD4536}.Debug|x64.Build.0 = Debug|x64
+		{D195822B-17A4-44C8-B7F5-02E1C4CD4536}.Debug|x86.ActiveCfg = Debug|Win32
+		{D195822B-17A4-44C8-B7F5-02E1C4CD4536}.Debug|x86.Build.0 = Debug|Win32
+		{D195822B-17A4-44C8-B7F5-02E1C4CD4536}.Release|x64.ActiveCfg = Release|x64
+		{D195822B-17A4-44C8-B7F5-02E1C4CD4536}.Release|x64.Build.0 = Release|x64
+		{D195822B-17A4-44C8-B7F5-02E1C4CD4536}.Release|x86.ActiveCfg = Release|Win32
+		{D195822B-17A4-44C8-B7F5-02E1C4CD4536}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

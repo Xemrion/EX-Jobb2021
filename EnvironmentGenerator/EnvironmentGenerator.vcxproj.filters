@@ -3,10 +3,10 @@
   <ItemGroup>
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Generator.cpp" />
-    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Generator.h" />
+    <ClInclude Include="Position.h" />
   </ItemGroup>
 </Project>

@@ -34,5 +34,5 @@
 # Folders
 
 .vs
-Debug
-EnvironmentGenerator/Debug
+Win32
+x64
