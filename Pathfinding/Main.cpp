@@ -3,6 +3,7 @@
 #include <chrono>
 #include <Generator.h>
 #include "AlgorithmAStar.h"
+#include "AlgorithmDijkstras.h"
 
 void savePathToFile(const std::vector<Position>& path, const std::string& filename)
 {
@@ -25,7 +26,7 @@ void savePathToFile(const std::vector<Position>& path, const std::string& filena
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	const int SIZE = 64;
+	const int SIZE = 16;
 
 	int rng = 0;
 	int seed = (int)(&rng);
@@ -40,6 +41,7 @@ int main()
 	Position start(0, SIZE / 2, 0);
 	Position end(SIZE - 1, SIZE / 2, SIZE - 1);
 	AlgorithmAStar algorithm;
+	AlgorithmDijkstras algorithm2;
 
 	std::cout << "+=@ Pathfinding @=+\n";
 	auto before = std::chrono::system_clock::now();
