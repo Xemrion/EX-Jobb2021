@@ -34,7 +34,7 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 
 		closedSet[currentNode->pos] = currentNode;
 		openSet.erase(currentNode->pos);
-		openSetNodes.erase(currentNode);
+		openSetNodes.erase(openSetNodes.begin());
 
 		//Is the node the end pos? Retrace to get the full path.
 		if (currentNode->pos == end)
