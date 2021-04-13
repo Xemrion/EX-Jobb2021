@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <chrono>
 #include <Generator.h>
 #include "AlgorithmAStar.h"
 
@@ -24,23 +25,33 @@ void savePathToFile(const std::vector<Position>& path, const std::string& filena
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	const int SIZE = 32;
+	const int SIZE = 64;
 
 	int rng = 0;
 	int seed = (int)(&rng);
 
-	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.66f);
+	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.75f);
+
+	std::cout << "\n";
 	env->saveToFile("environment.txt");
+	std::cout << "\n";
 
 	std::vector<Position> path;
 	Position start(0, SIZE / 2, 0);
 	Position end(SIZE - 1, SIZE / 2, SIZE - 1);
 	AlgorithmAStar algorithm;
 
-	std::cout << "++ Pathfinding...\n";
-	if (algorithm.pathfind(env, start, end, path))
+	std::cout << "+=@ Pathfinding @=+\n";
+	auto before = std::chrono::system_clock::now();
+
+	bool result = algorithm.pathfind(env, start, end, path);
+
+	auto after = std::chrono::system_clock::now();
+	long long time = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
+	std::cout << "++ DONE! Took " << time << " ms.\n\n";
+
+	if (result)
 	{
-		std::cout << "++ Path found!\n";
 		savePathToFile(path, "path.txt");
 	}
 	else
