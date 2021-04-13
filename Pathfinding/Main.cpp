@@ -41,7 +41,7 @@ int main()
 	Position start(0, SIZE / 2, 0);
 	Position end(SIZE - 1, SIZE / 2, SIZE - 1);
 	AlgorithmAStar algorithm;
-	AlgorithmDijkstras algorithm2;
+	//AlgorithmDijkstras algorithm2;
 
 	std::cout << "+=@ Pathfinding @=+\n";
 	auto before = std::chrono::system_clock::now();
