@@ -27,7 +27,7 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 	openSetNodes.insert(new Node(start));
 	openSet[start] = *openSetNodes.begin();
 
-	while (!openSet.empty())
+	while (!openSetNodes.empty())
 	{
 		//Move node with lowest cost to the closed set.
 		currentNode = *openSetNodes.begin();
