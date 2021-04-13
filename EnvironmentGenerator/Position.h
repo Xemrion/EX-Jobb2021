@@ -55,6 +55,11 @@ struct Position
 		return this->x == other.x && this->y == other.y && this->z == other.z;
 	}
 
+	bool operator<(const Position& other) const
+	{
+		return this->x < other.x || (this->x == other.x && (this->y < other.y || (this->y == other.y && this->z < other.z)));
+	}
+
 	Position& operator=(const Position& other)
 	{
 		this->x = other.x;

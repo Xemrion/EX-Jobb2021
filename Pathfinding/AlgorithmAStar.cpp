@@ -1,6 +1,6 @@
 #include "AlgorithmAStar.h"
 #include <set>
-#include <unordered_set>
+#include <map>
 
 AlgorithmAStar::AlgorithmAStar()
 {
@@ -15,20 +15,26 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 	if (!env || !env->canVisit(start) || !env->canVisit(end))
 		return false;
 
-	std::multiset<Node*, NodeComparer> openSet;
-	std::vector<Node*> closedSet;
+	std::multiset<Node*, NodeComparer> openSetNodes; //Sorted by lowest cost.
+	std::map<Position, Node*> openSet; //Sorted by position.
+	std::map<Position, Node*> closedSet; //Sorted by position.
 	Node* currentNode = nullptr;
+	Node* neighbour = nullptr;
 	Position neighbourPos;
+	std::map<Position, Node*>::iterator iterator;
 
 	//Add start node to the open set.
-	openSet.insert(new Node(start));
+	openSetNodes.insert(new Node(start));
+	openSet[start] = *openSetNodes.begin();
 
 	while (!openSet.empty())
 	{
-		//Move node to the closed set.
-		currentNode = *openSet.begin();
-		closedSet.push_back(currentNode);
-		openSet.erase(openSet.begin());
+		//Move node with lowest cost to the closed set.
+		currentNode = *openSetNodes.begin();
+
+		closedSet[currentNode->pos] = currentNode;
+		openSet.erase(currentNode->pos);
+		openSetNodes.erase(currentNode);
 
 		//Is the node the end pos? Retrace to get the full path.
 		if (currentNode->pos == end)
@@ -43,10 +49,10 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 			while (currentNode);
 
 			//Delete the nodes.
-			for (Node* node : openSet)
-				delete node;
-			for (Node* node : closedSet)
-				delete node;
+			for (auto& pair : openSet)
+				delete pair.second;
+			for (auto& pair : closedSet)
+				delete pair.second;
 
 			return true;
 		}
@@ -59,32 +65,32 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 			if (env->canVisit(neighbourPos))
 			{
 				//Find the node if it already exists in the closed set.
-				auto neighbourIter = std::find_if(closedSet.begin(), closedSet.end(),
-					[&neighbourPos](Node* node) { return node->pos == neighbourPos; }
-				);
+				iterator = closedSet.find(neighbourPos);
 
-				if (neighbourIter == closedSet.end())
+				if (iterator == closedSet.end())
 				{
-					//Find the node if it already exists in the open set.
-					auto neighbourIter2 = std::find_if(openSet.begin(), openSet.end(),
-						[&neighbourPos](Node* node) { return node->pos == neighbourPos; }
-					);
-
 					float gCost = currentNode->gCost + currentNode->pos.distanceTo(neighbourPos);
 
-					if (neighbourIter2 == openSet.end())
+					//Find the node if it already exists in the open set.
+					iterator = openSet.find(neighbourPos);
+
+					if (iterator == openSet.end())
 					{
-						//If the node doesn't exist: add it!
+						//If the node doesn't exist:
 						float hCost = neighbourPos.distanceTo(end);
-						openSet.insert(new Node(neighbourPos, gCost + hCost, gCost, hCost, currentNode));
+						neighbour = new Node(neighbourPos, gCost + hCost, gCost, hCost, currentNode);
+
+						openSet[neighbourPos] = neighbour;
+						openSetNodes.insert(neighbour);
 					}
 					else
 					{
-						Node* neighbour = *neighbourIter2;
+						//If the node exists:
+						neighbour = iterator->second;
 
+						//Only update the node if it would get a lesser gCost.
 						if (gCost < neighbour->gCost)
 						{
-							//If the node exists: only change it if it would get a lesser gCost.
 							neighbour->gCost = gCost;
 							neighbour->fCost = neighbour->gCost + neighbour->hCost;
 							neighbour->parent = currentNode;
@@ -96,10 +102,10 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 	}
 
 	//Delete the nodes.
-	for (Node* node : openSet)
-		delete node;
-	for (Node* node : closedSet)
-		delete node;
+	for (auto& pair : openSet)
+		delete pair.second;
+	for (auto& pair : closedSet)
+		delete pair.second;
 
 	return false;
 }
