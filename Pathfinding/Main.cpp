@@ -1,9 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <array>
 #include <Generator.h>
 #include "AlgorithmAStar.h"
 #include "AlgorithmDijkstras.h"
+
+//GLOBALS
+const float g_percentageVisitable = 0.75f;
+const int g_amountPerSize = 5;
+const std::array<int, 3> g_envSizes = { 16, 32, 64 };
+//GLOBALS
 
 void savePathToFile(const std::vector<Position>& path, const std::string& filename)
 {
@@ -23,9 +30,100 @@ void savePathToFile(const std::vector<Position>& path, const std::string& filena
 	}
 }
 
-int main()
+void createEnvironmentSet(int size, float percentageVisitable, int amount)
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	bool result = false;
+	int seed = 0;
+
+	Position start(0, size / 2, 0);
+	Position end(size - 1, size / 2, size - 1);
+	std::vector<Position> path;
+	AlgorithmAStar algorithm;
+	Environment* env = nullptr;
+
+	for (int i = 0; i < amount; i++)
+	{
+		result = false;
+
+		while (!result)
+		{
+			path.clear();
+
+			env = Generator::generateEnvironment(size, size, size, seed, percentageVisitable, true);
+			result = algorithm.pathfind(env, start, end, path);
+
+			if (result)
+			{
+				env->saveToFile("environment" + std::to_string(size) + "_" + std::to_string(i) + ".txt");
+			}
+
+			delete env;
+			seed += 1000;
+		}
+	}
+}
+
+void createAllTests()
+{
+	//Create environments.
+	for (int i = 0; i < static_cast<int>(g_envSizes.size()); i++)
+	{
+		createEnvironmentSet(g_envSizes[i], g_percentageVisitable, g_amountPerSize);
+	}
+
+	std::cout << "\nALL TESTS CREATED!\n";
+}
+
+void doFullTest(Algorithm* algorithm)
+{
+	std::vector<Position> path;
+	Environment* env = nullptr;
+
+	for (int i = 0; i < static_cast<int>(g_envSizes.size()); i++)
+	{
+		for (int j = 0; j < g_amountPerSize; j++)
+		{
+			std::string name = std::to_string(g_envSizes[i]) + "_" + std::to_string(j);
+			env = Environment::readFromFile("environment" + name + ".txt");
+
+			if (!env)
+			{
+				std::cout << "Could not load: environment" << name << "\n";
+				continue;
+			}
+
+			Position start(0, env->getSizeY() / 2, 0);
+			Position end(env->getSizeX() - 1, env->getSizeY() / 2, env->getSizeZ() - 1);
+			path.clear();
+
+			std::cout << "+=@ Pathfinding @=+\n";
+			auto before = std::chrono::system_clock::now();
+
+			bool result = algorithm->pathfind(env, start, end, path);
+
+			auto after = std::chrono::system_clock::now();
+			long long time = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
+			std::cout << "++ DONE! Took " << time << " ms.\n";
+
+			if (result)
+			{
+				savePathToFile(path, "path" + name + ".txt");
+			}
+			else
+			{
+				std::cout << "++ ERROR: No path found.\n";
+			}
+
+			std::cout << "\n";
+			delete env;
+		}
+	}
+
+	std::cout << "\nFULL TEST COMPLETE!\n";
+}
+
+void doSimpleTest(Algorithm* algorithm)
+{
 	const int SIZE = 16;
 
 	int rng = 0;
@@ -39,20 +137,17 @@ int main()
 
 	std::vector<Position> path;
 	Position start(0, SIZE / 2, 0);
-	Position end(SIZE - 7, SIZE - 3, SIZE - 1);
-	AlgorithmAStar algorithm;
-	AlgorithmDijkstras algorithm2;
+	Position end(SIZE - 1, SIZE / 2, SIZE - 1);
 
 	std::cout << "+=@ Pathfinding @=+\n";
 	auto before = std::chrono::system_clock::now();
 
-	bool result = algorithm2.pathfind(env, start, end, path);
+	bool result = algorithm->pathfind(env, start, end, path);
 
 	auto after = std::chrono::system_clock::now();
 	long long time = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
 	std::cout << "++ DONE! Took " << time << " ms.\n\n";
-	//C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\Git\mingw32\libexec\git-core
-	//c/program files (x86)/microsoft visual studio/2019/community/common7/ide/commonextensions/microsoft/teamfoundation/team explorer/Git/mingw32/libexec/git-core/git-askpass.exe
+
 	if (result)
 	{
 		savePathToFile(path, "path.txt");
@@ -62,7 +157,22 @@ int main()
 		std::cout << "++ No path found.\n";
 	}
 
-	std::cin.get();
 	delete env;
+}
+
+int main()
+{
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+	AlgorithmAStar algorithmAstar;
+	AlgorithmDijkstras algorithmDijkstras;
+
+	//doSimpleTest(&algorithmDijkstras);
+
+	//createAllTests();
+
+	//doFullTest(&algorithmAstar);
+
+	std::cin.get();
 	return 0;
 }
