@@ -3,6 +3,7 @@
 #include <chrono>
 #include <array>
 #include <Generator.h>
+#include "Memory.h"
 #include "AlgorithmAStar.h"
 #include "AlgorithmDijkstras.h"
 
@@ -166,6 +167,9 @@ int main()
 
 	AlgorithmAStar algorithmAstar;
 	AlgorithmDijkstras algorithmDijkstras;
+
+	Memory::recordMemUsed();
+	Memory::printMemUsed();
 
 	//doSimpleTest(&algorithmDijkstras);
 
