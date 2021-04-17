@@ -16,6 +16,7 @@ public:
 	bool canVisit(Position position) const;
 	void setCanVisit(int x, int y, int z, bool canVisit);
 	void setCanVisit(Position position, bool canVisit);
+	void setCanVisitAll(bool canVisit);
 	float getAmountVisitable() const;
 	int getSizeX() const;
 	int getSizeY() const;

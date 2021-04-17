@@ -88,6 +88,12 @@ void Environment::setCanVisit(Position position, bool canVisit)
     return this->setCanVisit(position.x, position.y, position.z, canVisit);
 }
 
+void Environment::setCanVisitAll(bool canVisit)
+{
+    int length = this->xSize * this->ySize * this->zSize;
+    std::fill(this->nodes, this->nodes + length, canVisit);
+}
+
 float Environment::getAmountVisitable() const
 {
     int length = this->xSize * this->ySize * this->zSize;
