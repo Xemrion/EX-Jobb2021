@@ -31,7 +31,7 @@ int main()
 	int rng = 0;
 	int seed = (int)(&rng);
 
-	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.75f);
+	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 1.0f);
 
 	std::cout << "\n";
 	env->saveToFile("environment.txt");
@@ -39,19 +39,20 @@ int main()
 
 	std::vector<Position> path;
 	Position start(0, SIZE / 2, 0);
-	Position end(SIZE - 1, SIZE / 2, SIZE - 1);
+	Position end(SIZE - 7, SIZE - 3, SIZE - 1);
 	AlgorithmAStar algorithm;
-	//AlgorithmDijkstras algorithm2;
+	AlgorithmDijkstras algorithm2;
 
 	std::cout << "+=@ Pathfinding @=+\n";
 	auto before = std::chrono::system_clock::now();
 
-	bool result = algorithm.pathfind(env, start, end, path);
+	bool result = algorithm2.pathfind(env, start, end, path);
 
 	auto after = std::chrono::system_clock::now();
 	long long time = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
 	std::cout << "++ DONE! Took " << time << " ms.\n\n";
-
+	//C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\Git\mingw32\libexec\git-core
+	//c/program files (x86)/microsoft visual studio/2019/community/common7/ide/commonextensions/microsoft/teamfoundation/team explorer/Git/mingw32/libexec/git-core/git-askpass.exe
 	if (result)
 	{
 		savePathToFile(path, "path.txt");

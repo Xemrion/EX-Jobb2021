@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ALGORITHM_DIJK_H
+#define ALGORITHM_DIJK_H
 #include "Algorithm.h"
 class AlgorithmDijkstras : public Algorithm
 {
@@ -13,6 +14,7 @@ private:
 		float fCost, gCost, hCost;
 		Node* parent;
 		bool visited = false;
+		bool included = false;
 		float totalCost = 0;
 	};
 
@@ -31,3 +33,4 @@ public:
 	bool pathfind(Environment* env, const Position& start, const Position& end, std::vector<Position>& outPath) override;
 };
 
+#endif // !ALGORITHM_DIJK_H
