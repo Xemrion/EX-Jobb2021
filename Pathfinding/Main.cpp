@@ -6,6 +6,7 @@
 #include "Memory.h"
 #include "AlgorithmAStar.h"
 #include "AlgorithmDijkstras.h"
+#include "AlgorithmBacktrack.h"
 
 //GLOBALS
 const float g_percentageVisitable = 0.75f;
@@ -125,12 +126,12 @@ void doFullTest(Algorithm* algorithm)
 
 void doSimpleTest(Algorithm* algorithm)
 {
-	const int SIZE = 16;
+	const int SIZE = 32;
 
 	int rng = 0;
 	int seed = (int)(&rng);
 
-	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 1.0f);
+	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.5f);
 
 	std::cout << "\n";
 	env->saveToFile("environment.txt");
@@ -167,11 +168,12 @@ int main()
 
 	AlgorithmAStar algorithmAstar;
 	AlgorithmDijkstras algorithmDijkstras;
+	AlgorithmBacktrack algorithmBacktrack;
 
 	Memory::recordMemUsed();
 	Memory::printMemUsed();
 
-	//doSimpleTest(&algorithmDijkstras);
+	doSimpleTest(&algorithmBacktrack);
 
 	//createAllTests();
 

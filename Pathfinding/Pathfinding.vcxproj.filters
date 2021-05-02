@@ -5,11 +5,13 @@
     <ClCompile Include="AlgorithmAStar.cpp" />
     <ClCompile Include="AlgorithmDijkstras.cpp" />
     <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="AlgorithmBacktrack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm.h" />
     <ClInclude Include="AlgorithmAStar.h" />
     <ClInclude Include="AlgorithmDijkstras.h" />
     <ClInclude Include="Memory.h" />
+    <ClInclude Include="AlgorithmBacktrack.h" />
   </ItemGroup>
 </Project>

@@ -67,6 +67,10 @@ struct Position
 		this->z = other.z;
 		return *this;
 	}
+	bool operator!= (const Position& other)
+	{
+		return (this->x != other.x || this->y != other.y || this->z != other.z);
+	}
 };
 
 #endif // !POSITION_H

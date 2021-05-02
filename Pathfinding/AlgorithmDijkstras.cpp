@@ -33,7 +33,7 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 	totalSet.push_back(startNode);
 	currentNode = startNode;
 	currentNode->hCost = 1000;
-	while (visitedCount < nrOfAvailableNodes && endFound == false)
+	while (visitedCount < nrOfAvailableNodes/* && endFound == false*/)
 	{
 		//Move node to the closed set.
 		//currentNode = *openSet.begin();
@@ -89,8 +89,10 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 				if (posOfMin == -1) {
 					std::cout << "No unvisited node found " << "\n";
 				}
-				currentNode = totalSet.at(posOfMin);
-				std::cout << "nr of nodes visited: " << totalSet.size() << " nr of nodes visitable :" << nrOfAvailableNodes << "\n";
+				else {
+					currentNode = totalSet.at(posOfMin);
+					std::cout << "nr of nodes visited: " << totalSet.size() << " nr of nodes visitable :" << nrOfAvailableNodes << "\n";
+				}
 			}
 		}
 	}
