@@ -173,7 +173,7 @@ int main()
 	Memory::recordMemUsed();
 	Memory::printMemUsed();
 
-	doSimpleTest(&algorithmBacktrack);
+	doSimpleTest(&algorithmDijkstras);
 
 	//createAllTests();
 

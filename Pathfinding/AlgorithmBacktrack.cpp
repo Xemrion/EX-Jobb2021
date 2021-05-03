@@ -8,7 +8,7 @@ AlgorithmBacktrack::~AlgorithmBacktrack()
 {
 }
 
-bool AlgorithmBacktrack::solveMaze(Environment* env, Position& current, const Position& end, std::vector<Position>& outpath, std::vector<Position> alreadyChecked) {
+bool AlgorithmBacktrack::solveMaze(Environment* env, const Position& current, const Position& end, std::vector<Position>& outpath, std::vector<Position> alreadyChecked) {
 
     Position neighbour;
     //returns a list of the paths taken
@@ -52,7 +52,5 @@ bool AlgorithmBacktrack::pathfind(Environment* env, const Position& start, const
 {
     // returns a list of the paths taken
     std::vector<Position> alreadyChecked;
-    Node* startNode = new Node(start);
-    //alreadyChecked.insert(alreadyChecked.begin(), start);
-	return solveMaze(env, startNode->pos, end, outPath, alreadyChecked);
+	return solveMaze(env, start, end, outPath, alreadyChecked);
 }

@@ -27,7 +27,7 @@ private:
 public:
 	AlgorithmBacktrack();
 	virtual ~AlgorithmBacktrack();
-	bool solveMaze(Environment* env, Position& current, const Position& end, std::vector<Position>& outpath, std::vector<Position> alreadyChecked);
+	bool solveMaze(Environment* env, const Position& current, const Position& end, std::vector<Position>& outpath, std::vector<Position> alreadyChecked);
 	bool pathfind(Environment* env, const Position& start, const Position& end, std::vector<Position>& outPath) override;
 };
 
