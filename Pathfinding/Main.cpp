@@ -78,6 +78,7 @@ void createAllTests()
 
 void doFullTest(Algorithm* algorithm)
 {
+	std::fstream outputFile(algorithm->getName() + std::string(".txt"));
 	std::vector<Position> path;
 	Environment* env = nullptr;
 
@@ -99,13 +100,35 @@ void doFullTest(Algorithm* algorithm)
 			path.clear();
 
 			std::cout << "+=@ Pathfinding @=+\n";
+
+#ifndef MEMORY_TEST_ACTIVE
 			auto before = std::chrono::system_clock::now();
+#else
+			Memory::resetMemUsed();
+			Memory::recordMemUsed();
+
+			SIZE_T virtualMemBefore, physicalMemBefore;
+			Memory::getMemUsed(virtualMemBefore, physicalMemBefore);
+#endif // !MEMORY_TEST_ACTIVE
+			
 
 			bool result = algorithm->pathfind(env, start, end, path);
 
+#ifndef MEMORY_TEST_ACTIVE
 			auto after = std::chrono::system_clock::now();
 			long long time = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
 			std::cout << "++ DONE! Took " << time << " ms.\n";
+			outputFile << name << " - " << time << " ms\n";
+#else
+			SIZE_T virtualMemAfter, physicalMemAfter;
+			Memory::getMemUsed(virtualMemAfter, physicalMemAfter);
+
+			SIZE_T virtualUsed = virtualMemAfter - virtualMemBefore;
+			SIZE_T physicalUsed = physicalMemAfter - physicalMemBefore;
+
+			std::cout << "++ DONE! Took virtual: " << virtualUsed << " bytes. Took physical: " << physicalUsed << " bytes.\n";
+			outputFile << name << " - Virtual/Physical: " << virtualUsed << " / " << physicalUsed << " bytes\n";
+#endif // !MEMORY_TEST_ACTIVE
 
 			if (result)
 			{
@@ -121,6 +144,7 @@ void doFullTest(Algorithm* algorithm)
 		}
 	}
 
+	outputFile.close();
 	std::cout << "\nFULL TEST COMPLETE!\n";
 }
 
