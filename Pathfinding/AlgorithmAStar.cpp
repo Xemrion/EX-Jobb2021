@@ -2,6 +2,10 @@
 #include <set>
 #include <map>
 
+#ifdef MEMORY_TEST_ACTIVE
+#include "Memory.h"
+#endif // MEMORY_TEST_ACTIVE
+
 AlgorithmAStar::AlgorithmAStar()
 {
 }
@@ -27,6 +31,10 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 	openSetNodes.insert(new Node(start));
 	openSet[start] = *openSetNodes.begin();
 
+#ifdef MEMORY_TEST_ACTIVE
+	Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
+
 	while (!openSetNodes.empty())
 	{
 		//Move node with lowest cost to the closed set.
@@ -45,6 +53,10 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 			{
 				outPath.insert(outPath.begin(), currentNode->pos);
 				currentNode = currentNode->parent;
+
+#ifdef MEMORY_TEST_ACTIVE
+				Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 			}
 			while (currentNode);
 
@@ -53,6 +65,10 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 				delete pair.second;
 			for (auto& pair : closedSet)
 				delete pair.second;
+
+#ifdef MEMORY_TEST_ACTIVE
+			Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 
 			return true;
 		}
@@ -98,6 +114,10 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 					}
 				}
 			}
+
+#ifdef MEMORY_TEST_ACTIVE
+			Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 		}
 	}
 
@@ -106,6 +126,10 @@ bool AlgorithmAStar::pathfind(Environment* env, const Position& start, const Pos
 		delete pair.second;
 	for (auto& pair : closedSet)
 		delete pair.second;
+
+#ifdef MEMORY_TEST_ACTIVE
+	Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 
 	return false;
 }

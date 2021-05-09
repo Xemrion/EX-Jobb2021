@@ -2,6 +2,11 @@
 #include <set>
 #include <unordered_set>
 //#include <iostream>
+
+#ifdef MEMORY_TEST_ACTIVE
+#include "Memory.h"
+#endif // MEMORY_TEST_ACTIVE
+
 AlgorithmDijkstras::AlgorithmDijkstras()
 {
 }
@@ -33,6 +38,11 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 	totalSet.push_back(startNode);
 	currentNode = startNode;
 	currentNode->hCost = 1000;
+
+#ifdef MEMORY_TEST_ACTIVE
+	Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
+
 	while (visitedCount < nrOfAvailableNodes/* && endFound == false*/)
 	{
 		//Move node to the closed set.
@@ -85,6 +95,10 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 							endPosInList = next;
 						}
 					}
+
+#ifdef MEMORY_TEST_ACTIVE
+					Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 				}
 				if (posOfMin == -1) {
 					//std::cout << "No unvisited node found " << "\n";
@@ -94,6 +108,11 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 					//std::cout << "nr of nodes visited: " << totalSet.size() << " nr of nodes visitable :" << nrOfAvailableNodes << "\n";
 				}
 			}
+
+
+#ifdef MEMORY_TEST_ACTIVE
+			Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 		}
 	}
 
@@ -124,6 +143,10 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 						}
 					}
 				}
+
+#ifdef MEMORY_TEST_ACTIVE
+				Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 			}
 			if (LastGCost != minGCost) {
 				LastGCost = minGCost;
@@ -136,7 +159,10 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 			/*else {
 				std::cout << "No new nodes: " << "\n";
 			}*/
-			
+
+#ifdef MEMORY_TEST_ACTIVE
+			Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 		}
 		
 
@@ -150,6 +176,10 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 
 		return true;
 	}
+
+#ifdef MEMORY_TEST_ACTIVE
+	Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
 
 	//Delete the nodes.
 	for (Node* node : openSet)

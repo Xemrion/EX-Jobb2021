@@ -1,5 +1,10 @@
 #include "AlgorithmBacktrack.h"
 //#include <iostream>
+
+#ifdef MEMORY_TEST_ACTIVE
+#include "Memory.h"
+#endif // MEMORY_TEST_ACTIVE
+
 AlgorithmBacktrack::AlgorithmBacktrack()
 {
 }
@@ -20,6 +25,11 @@ bool AlgorithmBacktrack::solveMaze(Environment* env, const Position& current, co
     /*if (alreadyChecked.size() == 4096) {
         std::cout << "Should be all of them" << "\n";
     }*/
+
+#ifdef MEMORY_TEST_ACTIVE
+    Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
+
     for (int i = 0; i < 6; i++) {
         neighbour = current.getNeighbour(static_cast<Position::Direction>(i));
         if (env->canVisit(neighbour)) {
@@ -32,6 +42,10 @@ bool AlgorithmBacktrack::solveMaze(Environment* env, const Position& current, co
             if (found == false) {
                 alreadyChecked.insert(alreadyChecked.begin(), neighbour);
                 //std::cout << "Trying node nr: " << alreadyChecked.size() << "\n";
+
+#ifdef MEMORY_TEST_ACTIVE
+                Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
                 
                 if (solveMaze(env, neighbour, end, outpath, alreadyChecked)) {
                     outpath.insert(outpath.begin(), current);
@@ -44,6 +58,10 @@ bool AlgorithmBacktrack::solveMaze(Environment* env, const Position& current, co
                 return false;
             }
         }
+
+#ifdef MEMORY_TEST_ACTIVE
+        Memory::recordMemUsed();
+#endif // MEMORY_TEST_ACTIVE
     }
     return false;
 }
