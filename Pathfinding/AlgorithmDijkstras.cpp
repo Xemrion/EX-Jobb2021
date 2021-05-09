@@ -1,7 +1,7 @@
 #include "AlgorithmDijkstras.h"
 #include <set>
 #include <unordered_set>
-#include <iostream>
+//#include <iostream>
 AlgorithmDijkstras::AlgorithmDijkstras()
 {
 }
@@ -81,24 +81,24 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 						}
 						if (totalSet.at(next)->pos == end) {
 							endFound = true;
-							std::cout << "End Node is: " << next << " Position: " << totalSet.at(next)->pos.x << "," << totalSet.at(next)->pos.y << "," << totalSet.at(next)->pos.z << "\n";
+							//std::cout << "End Node is: " << next << " Position: " << totalSet.at(next)->pos.x << "," << totalSet.at(next)->pos.y << "," << totalSet.at(next)->pos.z << "\n";
 							endPosInList = next;
 						}
 					}
 				}
 				if (posOfMin == -1) {
-					std::cout << "No unvisited node found " << "\n";
+					//std::cout << "No unvisited node found " << "\n";
 				}
 				else {
 					currentNode = totalSet.at(posOfMin);
-					std::cout << "nr of nodes visited: " << totalSet.size() << " nr of nodes visitable :" << nrOfAvailableNodes << "\n";
+					//std::cout << "nr of nodes visited: " << totalSet.size() << " nr of nodes visitable :" << nrOfAvailableNodes << "\n";
 				}
 			}
 		}
 	}
 
-	std::cout << "################ Completed. ################\n";
-	std::cout << "nr of nodes visited: " << visitedCount <<"\n";
+	//std::cout << "################ Completed. ################\n";
+	//std::cout << "nr of nodes visited: " << visitedCount <<"\n";
 
 	if (endPosInList > 0) {
 		/*do
@@ -131,11 +131,11 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 				outPath.insert(outPath.begin(), currentNode->pos);
 				currentNode->included = true;
 				nrInOutPath++;
-				std::cout << "nr of nodes added to path: " << nrInOutPath << " Cost of Node: " << currentNode->hCost << "\n";
+				//std::cout << "nr of nodes added to path: " << nrInOutPath << " Cost of Node: " << currentNode->hCost << "\n";
 			}
-			else {
+			/*else {
 				std::cout << "No new nodes: " << "\n";
-			}
+			}*/
 			
 		}
 		

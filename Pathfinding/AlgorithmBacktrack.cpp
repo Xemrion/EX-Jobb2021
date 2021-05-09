@@ -1,5 +1,5 @@
 #include "AlgorithmBacktrack.h"
-#include <iostream>
+//#include <iostream>
 AlgorithmBacktrack::AlgorithmBacktrack()
 {
 }
@@ -14,12 +14,12 @@ bool AlgorithmBacktrack::solveMaze(Environment* env, const Position& current, co
     //returns a list of the paths taken
     if (current == end) {
         outpath.insert(outpath.begin(), current);
-        std::cout << "End Found"<< "\n";
+       // std::cout << "End Found"<< "\n";
         return true;
     }
-    if (alreadyChecked.size() == 4096) {
+    /*if (alreadyChecked.size() == 4096) {
         std::cout << "Should be all of them" << "\n";
-    }
+    }*/
     for (int i = 0; i < 6; i++) {
         neighbour = current.getNeighbour(static_cast<Position::Direction>(i));
         if (env->canVisit(neighbour)) {
@@ -31,7 +31,7 @@ bool AlgorithmBacktrack::solveMaze(Environment* env, const Position& current, co
             }
             if (found == false) {
                 alreadyChecked.insert(alreadyChecked.begin(), neighbour);
-                std::cout << "Trying node nr: " << alreadyChecked.size() << "\n";
+                //std::cout << "Trying node nr: " << alreadyChecked.size() << "\n";
                 
                 if (solveMaze(env, neighbour, end, outpath, alreadyChecked)) {
                     outpath.insert(outpath.begin(), current);
