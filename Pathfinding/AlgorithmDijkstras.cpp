@@ -49,7 +49,7 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 			{
 				bool found = false;
 				int posOfFound = 0;
-				for (int j = 0; j < totalSet.size() && !found; j++) {
+				for (int j = 0; j < static_cast<int>(totalSet.size()) && !found; j++) {
 					if (totalSet.at(j)->pos == neighbourPos) {
 						found = true;
 						posOfFound = j;
@@ -71,9 +71,9 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 			if (i == 5) {
 				currentNode->visited = true;
 				visitedCount++;
-				int minCost = 1000;
+				float minCost = 1000.0f;
 				int posOfMin = -1;
-				for (int next = 0; next < totalSet.size(); next++) {
+				for (int next = 0; next < static_cast<int>(totalSet.size()); next++) {
 					if (totalSet.at(next) != currentNode && totalSet.at(next)->gCost != 0 && !totalSet.at(next)->visited){
 						if (totalSet.at(next)->gCost < minCost) {
 							minCost = totalSet.at(next)->gCost;
@@ -117,7 +117,7 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 			for (int i = 0; i < 6; i++) {
 				neighbourPos = currentNode->pos.getNeighbour(static_cast<Position::Direction>(i));
 				if (env->canVisit(neighbourPos)) {
-					for (int j = 0; j < totalSet.size(); j++) {
+					for (int j = 0; j < static_cast<int>(totalSet.size()); j++) {
 						if (totalSet.at(j)->pos == neighbourPos && totalSet.at(j)->hCost < minGCost && !totalSet.at(j)->included) {
 							minGCost = totalSet.at(j)->hCost;
 							posOfMinCost = j;

@@ -24,7 +24,7 @@ bool AlgorithmBacktrack::solveMaze(Environment* env, const Position& current, co
         neighbour = current.getNeighbour(static_cast<Position::Direction>(i));
         if (env->canVisit(neighbour)) {
             bool found = false;
-            for (int nrInAlready = 0; nrInAlready < alreadyChecked.size(); nrInAlready++) {
+            for (int nrInAlready = 0; nrInAlready < static_cast<int>(alreadyChecked.size()); nrInAlready++) {
                 if (alreadyChecked[nrInAlready] == neighbour) {
                     found = true;
                 }
