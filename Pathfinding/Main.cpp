@@ -80,11 +80,18 @@ void createAllTests()
 void doFullTest(Algorithm* algorithm)
 {
 #ifndef MEMORY_TEST_ACTIVE
-	std::fstream outputFile(algorithm->getName() + std::string("_time.txt"));
+	std::string filename = algorithm->getName() + std::string("_time.txt");
 #else
-	std::fstream outputFile(algorithm->getName() + std::string("_memory.txt"));
+	std::string filename = algorithm->getName() + std::string("_memory.txt");
 #endif // !MEMORY_TEST_ACTIVE
-	
+
+	std::ofstream outputFile(filename);
+	if (!outputFile.is_open())
+	{
+		std::cout << "Could not create test file: " << filename << "\n";
+		return;
+	}
+
 	std::vector<Position> path;
 	Environment* env = nullptr;
 
@@ -199,8 +206,8 @@ int main()
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	AlgorithmAStar algorithmAstar;
-	AlgorithmDijkstras algorithmDijkstras;
-	AlgorithmBacktrack algorithmBacktrack;
+	//AlgorithmDijkstras algorithmDijkstras;
+	//AlgorithmBacktrack algorithmBacktrack;
 
 	Memory::recordMemUsed();
 	Memory::printMemUsed();
