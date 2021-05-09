@@ -28,6 +28,8 @@ public:
 	AlgorithmAStar();
 	virtual ~AlgorithmAStar();
 
+	const char* getName() const { return "AStar"; }
+
 	bool pathfind(Environment* env, const Position& start, const Position& end, std::vector<Position>& outPath) override;
 };
 

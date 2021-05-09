@@ -30,6 +30,8 @@ public:
 	AlgorithmDijkstras();
 	virtual ~AlgorithmDijkstras();
 
+	const char* getName() const { return "Dijkstra"; }
+
 	bool pathfind(Environment* env, const Position& start, const Position& end, std::vector<Position>& outPath) override;
 };
 
