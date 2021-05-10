@@ -1,7 +1,7 @@
 #include "AlgorithmDijkstras.h"
 #include <set>
 #include <unordered_set>
-//#include <iostream>
+#include <iostream>
 
 #ifdef MEMORY_TEST_ACTIVE
 #include "Memory.h"
@@ -17,8 +17,11 @@ AlgorithmDijkstras::~AlgorithmDijkstras()
 
 bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const Position& end, std::vector<Position>& outPath)
 {
-	if (!env || !env->canVisit(start) || !env->canVisit(end))
+	if (!env || !env->canVisit(start) || !env->canVisit(end)) {
+		std::cout << "Impossible" << "\n";
 		return false;
+	}
+
 
 	std::multiset<Node*, NodeComparer> openSet;
 	std::vector<Node*> closedSet;
@@ -91,7 +94,7 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 						}
 						if (totalSet.at(next)->pos == end) {
 							endFound = true;
-							//std::cout << "End Node is: " << next << " Position: " << totalSet.at(next)->pos.x << "," << totalSet.at(next)->pos.y << "," << totalSet.at(next)->pos.z << "\n";
+							std::cout << "End Node is: " << next << " Position: " << totalSet.at(next)->pos.x << "," << totalSet.at(next)->pos.y << "," << totalSet.at(next)->pos.z << "\n";
 							endPosInList = next;
 						}
 					}
@@ -105,7 +108,7 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 				}
 				else {
 					currentNode = totalSet.at(posOfMin);
-					//std::cout << "nr of nodes visited: " << totalSet.size() << " nr of nodes visitable :" << nrOfAvailableNodes << "\n";
+					std::cout << "nr of nodes visited: " << totalSet.size() << " nr of nodes visitable :" << nrOfAvailableNodes << "\n";
 				}
 			}
 
@@ -132,9 +135,10 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 		float LastGCost = minGCost;
 		int posOfMinCost = -1;
 		int nrInOutPath = 0;
-		while (currentNode->hCost != 0) {
+		int currentPosInList = 0;
+		while (totalSet.at(currentPosInList)->hCost != 0) {
 			for (int i = 0; i < 6; i++) {
-				neighbourPos = currentNode->pos.getNeighbour(static_cast<Position::Direction>(i));
+				neighbourPos = totalSet.at(currentPosInList)->pos.getNeighbour(static_cast<Position::Direction>(i));
 				if (env->canVisit(neighbourPos)) {
 					for (int j = 0; j < static_cast<int>(totalSet.size()); j++) {
 						if (totalSet.at(j)->pos == neighbourPos && totalSet.at(j)->hCost < minGCost && !totalSet.at(j)->included) {
@@ -150,15 +154,25 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 			}
 			if (LastGCost != minGCost) {
 				LastGCost = minGCost;
-				currentNode = totalSet.at(posOfMinCost);
-				outPath.insert(outPath.begin(), currentNode->pos);
-				currentNode->included = true;
+				currentPosInList = posOfMinCost;
+				outPath.insert(outPath.begin(), totalSet.at(currentPosInList)->pos);
+				totalSet.at(currentPosInList)->included = true;
 				nrInOutPath++;
 				//std::cout << "nr of nodes added to path: " << nrInOutPath << " Cost of Node: " << currentNode->hCost << "\n";
 			}
-			/*else {
-				std::cout << "No new nodes: " << "\n";
-			}*/
+			else {
+				if (currentPosInList == 0) {
+					std::cout << "Stopped" << "\n";
+					return false;
+				}
+				totalSet.at(currentPosInList)->hCost += 10;
+				currentPosInList = 0;
+				minGCost = 1000;
+				LastGCost = 1000;
+				std::cout << "Reset" << "\n";
+				outPath.clear();
+				outPath.insert(outPath.begin(), totalSet.at(currentPosInList)->pos);
+			}
 
 #ifdef MEMORY_TEST_ACTIVE
 			Memory::recordMemUsed();

@@ -165,12 +165,12 @@ void doFullTest(Algorithm* algorithm)
 
 void doSimpleTest(Algorithm* algorithm)
 {
-	const int SIZE = 32;
+	const int SIZE = 16;
 
 	int rng = 0;
 	int seed = (int)(&rng);
 
-	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.5f);
+	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.75f);
 
 	std::cout << "\n";
 	env->saveToFile("environment.txt");
@@ -206,17 +206,17 @@ int main()
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
 	AlgorithmAStar algorithmAstar;
-	//AlgorithmDijkstras algorithmDijkstras;
+	AlgorithmDijkstras algorithmDijkstras;
 	//AlgorithmBacktrack algorithmBacktrack;
 
-	Memory::recordMemUsed();
-	Memory::printMemUsed();
+	//Memory::recordMemUsed();
+	//Memory::printMemUsed();
 
-	//doSimpleTest(&algorithmDijkstras);
+	doSimpleTest(&algorithmDijkstras);
 
 	//createAllTests();
 
-	doFullTest(&algorithmAstar);
+	//doFullTest(&algorithmAstar);
 
 	std::cin.get();
 	return 0;
