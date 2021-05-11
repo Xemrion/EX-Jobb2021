@@ -71,11 +71,13 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 				}
 				float gCost = currentNode->gCost + currentNode->pos.distanceTo(neighbourPos);
 				if (found){
+					if (totalSet.at(posOfFound)->hCost > (neighbourPos.distanceTo(end) + currentNode->hCost)) {
+					}
 					totalSet.at(posOfFound)->gCost = gCost;
 				}
 				else if(!found){
 					//lägg till
-					float hCost = neighbourPos.distanceTo(end);
+					float hCost = neighbourPos.distanceTo(end);// +currentNode->hCost;
 					nrOfAvailableNodes++;
 					totalSet.push_back(new Node(neighbourPos, gCost + hCost, gCost, hCost, currentNode));
 					
@@ -145,6 +147,10 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 							minGCost = totalSet.at(j)->hCost;
 							posOfMinCost = j;
 						}
+						else if (totalSet.at(j)->pos == neighbourPos && totalSet.at(j)->hCost == minGCost && !totalSet.at(j)->included) {
+							minGCost = totalSet.at(j)->hCost;
+							posOfMinCost = j;
+						}
 					}
 				}
 
@@ -161,15 +167,18 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 				//std::cout << "nr of nodes added to path: " << nrInOutPath << " Cost of Node: " << currentNode->hCost << "\n";
 			}
 			else {
-				if (currentPosInList == 0) {
-					std::cout << "Stopped" << "\n";
-					return false;
-				}
+				//if (currentPosInList == 0) {
+				//	std::cout << "Stopped" << "\n";
+				//	return false;
+				//}
 				totalSet.at(currentPosInList)->hCost += 10;
 				currentPosInList = 0;
 				minGCost = 1000;
 				LastGCost = 1000;
 				std::cout << "Reset" << "\n";
+				for (int i = 0; i < totalSet.size(); i++) {
+					totalSet.at(i)->included = false;
+				}
 				outPath.clear();
 				outPath.insert(outPath.begin(), totalSet.at(currentPosInList)->pos);
 			}

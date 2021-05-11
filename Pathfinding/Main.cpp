@@ -170,10 +170,11 @@ void doSimpleTest(Algorithm* algorithm)
 	int rng = 0;
 	int seed = (int)(&rng);
 
-	Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.75f);
+	//Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.75f);
+	Environment* env = Environment::readFromFile("environment16_1.txt");
 
 	std::cout << "\n";
-	env->saveToFile("environment.txt");
+	//env->saveToFile("environment.txt");
 	std::cout << "\n";
 
 	std::vector<Position> path;
