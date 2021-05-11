@@ -133,7 +133,7 @@ void doFullTest(Algorithm* algorithm)
 				auto after = std::chrono::system_clock::now();
 				long long time = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
 				std::cout << "++ DONE! Took " << time << " ms.\n";
-				outputFile << name << "_iter" << (k + 1) << " - " << time << " ms\n";
+				outputFile << name << "_iter" << (k + 1) << " - " << time << "\n";
 #else
 				SIZE_T virtualMemAfter, physicalMemAfter;
 				Memory::getMemUsed(virtualMemAfter, physicalMemAfter);
@@ -142,7 +142,7 @@ void doFullTest(Algorithm* algorithm)
 				SIZE_T physicalUsed = physicalMemAfter - physicalMemBefore;
 
 				std::cout << "++ DONE! Took virtual: " << virtualUsed << " bytes. Took physical: " << physicalUsed << " bytes.\n";
-				outputFile << name << "_iter" << (k + 1) << " - Virtual/Physical: " << virtualUsed << " / " << physicalUsed << " bytes\n";
+				outputFile << name << "_iter" << (k + 1) << " - Physical Memory: " << physicalUsed << "\n";
 #endif // !MEMORY_TEST_ACTIVE
 
 				if (result)
@@ -283,11 +283,13 @@ int main()
 
 	//doSimpleTest(&algorithmBacktrack);
 
-	compareAlgorithmsInfinite(&algorithmAstar, &algorithmDijkstras2);
+	//compareAlgorithmsInfinite(&algorithmAstar, &algorithmDijkstras2);
 
 	//createAllTests();
 
-	//doFullTest(&algorithmBacktrack);
+	doFullTest(&algorithmAstar);
+	doFullTest(&algorithmDijkstras2);
+	doFullTest(&algorithmBacktrack);
 
 	std::cin.get();
 	return 0;
