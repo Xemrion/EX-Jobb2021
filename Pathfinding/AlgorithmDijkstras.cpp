@@ -160,7 +160,7 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 				currentPosInList = 0;
 				minGCost = 1000;
 				LastGCost = 1000;
-				std::cout << "Reset" << "\n";
+				//std::cout << "Reset" << "\n";
 				for (int i = 0; i < totalSet.size(); i++) {
 					totalSet.at(i)->included = false;
 				}
