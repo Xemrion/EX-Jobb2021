@@ -14,6 +14,7 @@ private:
 		float fCost, gCost, hCost;
 		Node* parent;
 		bool visited = false;
+		bool rejected = false;
 	};
 
 	struct NodeComparer

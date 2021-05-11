@@ -171,7 +171,7 @@ void doSimpleTest(Algorithm* algorithm)
 	int seed = (int)(&rng);
 
 	//Environment* env = Generator::generateEnvironment(SIZE, SIZE, SIZE, seed, 0.75f);
-	Environment* env = Environment::readFromFile("environment16_1.txt");
+	Environment* env = Environment::readFromFile("environment16_4.txt");
 
 	std::cout << "\n";
 	//env->saveToFile("environment.txt");
@@ -206,14 +206,14 @@ int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	AlgorithmAStar algorithmAstar;
-	AlgorithmDijkstras algorithmDijkstras;
-	//AlgorithmBacktrack algorithmBacktrack;
+	//AlgorithmAStar algorithmAstar;
+	//AlgorithmDijkstras algorithmDijkstras;
+	AlgorithmBacktrack algorithmBacktrack;
 
 	//Memory::recordMemUsed();
 	//Memory::printMemUsed();
 
-	doSimpleTest(&algorithmDijkstras);
+	doSimpleTest(&algorithmBacktrack);
 
 	//createAllTests();
 
