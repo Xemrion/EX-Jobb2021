@@ -6,6 +6,7 @@
 #include "Memory.h"
 #include "AlgorithmAStar.h"
 #include "AlgorithmDijkstras.h"
+#include "AlgorithmDijkstras2.h"
 #include "AlgorithmBacktrack.h"
 
 //GLOBALS
@@ -163,6 +164,72 @@ void doFullTest(Algorithm* algorithm)
 	std::cout << "\nFULL TEST COMPLETE!\n";
 }
 
+bool doComparisonTest(Algorithm* algorithm1, Algorithm* algorithm2, int size, int seed, float amountVisitable)
+{
+	Environment* env = Generator::generateEnvironment(size, size, size, seed, amountVisitable, true);
+
+	std::vector<Position> path1;
+	std::vector<Position> path2;
+	Position start(0, size / 2, 0);
+	Position end(size - 1, size / 2, size - 1);
+
+	std::cout << "+=@ Pathfinding " << algorithm1->getName() << " @=+\n";
+	auto before = std::chrono::system_clock::now();
+
+	bool result1 = algorithm1->pathfind(env, start, end, path1);
+
+	auto after = std::chrono::system_clock::now();
+	long long time = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
+	std::cout << "++ DONE! Took " << time << " ms.\n\n";
+
+	std::cout << "+=@ Pathfinding " << algorithm2->getName() << " @=+\n";
+	before = std::chrono::system_clock::now();
+
+	bool result2 = algorithm2->pathfind(env, start, end, path2);
+
+	after = std::chrono::system_clock::now();
+	time = std::chrono::duration_cast<std::chrono::milliseconds>(after - before).count();
+	std::cout << "++ DONE! Took " << time << " ms.\n\n";
+
+	if (result1 && result2)
+	{
+		std::cout << "++ Both found a path. Looking good!\n";
+
+		delete env;
+		return true;
+	}
+	else if (!result1 && !result2)
+	{
+		std::cout << "++ None found a path. Looking good!\n";
+
+		delete env;
+		return true;
+	}
+	
+	std::cout << "++ UH OH. RESULT IS NOT THE SAME!\n";
+	std::cout << "++ " << algorithm1->getName() << ": " << (result1 ? "Cleared" : "Failed") << "\n";
+	std::cout << "++ " << algorithm2->getName() << ": " << (result2 ? "Cleared" : "Failed") << "\n";
+
+	env->saveToFile("environment_mismatch.txt");
+
+	delete env;
+	return false;
+}
+
+void compareAlgorithmsInfinite(Algorithm* algorithm1, Algorithm* algorithm2)
+{
+	const int SIZE = 16;
+	const float VISITABLE = 75.0f;
+
+	int rng = 0;
+	int seed = (int)(&rng);
+
+	while (doComparisonTest(algorithm1, algorithm2, SIZE, seed, VISITABLE))
+	{
+		seed++;
+	}
+}
+
 void doSimpleTest(Algorithm* algorithm)
 {
 	const int SIZE = 16;
@@ -206,18 +273,21 @@ int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	//AlgorithmAStar algorithmAstar;
-	//AlgorithmDijkstras algorithmDijkstras;
+	AlgorithmAStar algorithmAstar;
+	AlgorithmDijkstras algorithmDijkstras;
+	AlgorithmDijkstras2 algorithmDijkstras2;
 	AlgorithmBacktrack algorithmBacktrack;
 
 	//Memory::recordMemUsed();
 	//Memory::printMemUsed();
 
-	doSimpleTest(&algorithmBacktrack);
+	//doSimpleTest(&algorithmBacktrack);
+
+	compareAlgorithmsInfinite(&algorithmAstar, &algorithmDijkstras2);
 
 	//createAllTests();
 
-	//doFullTest(&algorithmAstar);
+	//doFullTest(&algorithmBacktrack);
 
 	std::cin.get();
 	return 0;
