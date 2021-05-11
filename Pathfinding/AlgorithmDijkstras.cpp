@@ -61,15 +61,13 @@ bool AlgorithmDijkstras::pathfind(Environment* env, const Position& start, const
 				}
 				float gCost = currentNode->gCost + currentNode->pos.distanceTo(neighbourPos);
 				if (found){
-					if (totalSet.at(posOfFound)->hCost > (neighbourPos.distanceTo(end) + currentNode->hCost)) {
-					}
 					totalSet.at(posOfFound)->gCost = gCost;
 				}
 				else if(!found){
 					//lägg till
 					float hCost = neighbourPos.distanceTo(end);// +currentNode->hCost;
 					nrOfAvailableNodes++;
-					totalSet.push_back(new Node(neighbourPos, gCost + hCost, gCost, hCost, currentNode));
+					totalSet.push_back(new Node(neighbourPos, gCost, hCost, currentNode));
 					
 				}
 			}

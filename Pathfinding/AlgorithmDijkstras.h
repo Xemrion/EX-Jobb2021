@@ -6,13 +6,12 @@ class AlgorithmDijkstras : public Algorithm
 private:
 	struct Node
 	{
-		Node() : pos(), gCost(0), hCost(0), parent(nullptr) {}
-		Node(const Position& pos) : pos(pos), gCost(0), hCost(0), parent(nullptr) {}
-		Node(const Position& pos, float fCost, float gCost, float hCost, Node* parent) : pos(pos), gCost(gCost), hCost(hCost), parent(parent) {}
+		Node() : pos(), gCost(0), hCost(0) {}
+		Node(const Position& pos) : pos(pos), gCost(0), hCost(0) {}
+		Node(const Position& pos, float gCost, float hCost, Node* parent) : pos(pos), gCost(gCost), hCost(hCost) {}
 
 		Position pos;
 		float gCost, hCost;
-		Node* parent;
 		bool visited = false;
 		bool included = false;
 	};
