@@ -6,6 +6,7 @@
     <ClCompile Include="AlgorithmDijkstras.cpp" />
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="AlgorithmBacktrack.cpp" />
+    <ClCompile Include="AlgorithmDijkstras2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm.h" />
@@ -13,5 +14,6 @@
     <ClInclude Include="AlgorithmDijkstras.h" />
     <ClInclude Include="Memory.h" />
     <ClInclude Include="AlgorithmBacktrack.h" />
+    <ClInclude Include="AlgorithmDijkstras2.h" />
   </ItemGroup>
 </Project>
